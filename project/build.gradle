@@ -1,0 +1,64 @@
+buildscript {
+    ext {
+        springBootVersion = '2.6.2'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    group 'org.example'
+    version '1.0-SNAPSHOT'
+
+    sourceCompatibility = '16'
+    targetCompatibility = '16'
+    compileJava.options.encoding = 'UTF-8'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+project(':consumer') {
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.apache.kafka:kafka-streams'
+        implementation 'org.springframework.kafka:spring-kafka'
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.springframework.kafka:spring-kafka-test'
+    }
+}
+
+project(':producer') {
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.apache.kafka:kafka-streams'
+        implementation 'org.springframework.kafka:spring-kafka'
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.springframework.kafka:spring-kafka-test'
+    }
+}
